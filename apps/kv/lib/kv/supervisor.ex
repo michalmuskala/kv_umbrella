@@ -1,17 +1,10 @@
 defmodule KV.Supervisor do
-  use Supervisor
-
-  def start_link do
-    Supervisor.start_link(__MODULE__, :ok)
-  end
-
-  def init(:ok) do
+  def child_spec(opts) do
     children = [
-      worker(KV.Registry, [KV.Registry]),
-      supervisor(KV.Bucket.Supervisor, []),
-      supervisor(Task.Supervisor, [[name: KV.RouterTasks]]),
+      {KV.Registry, name: KV.Registry},
+      KV.Bucket.Supervisor,
+      {Task.Supervisor, name: KV.RouterTasks}
     ]
-
-    supervise(children, strategy: :rest_for_one)
+    Supervisor.child_spec(children, [strategy: :rest_for_one] ++ opts)
   end
 end

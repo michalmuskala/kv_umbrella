@@ -2,8 +2,8 @@ defmodule KV.Bucket do
   @doc """
   Starts a new bucket.
   """
-  def start_link do
-    Agent.start_link(fn -> %{} end)
+  def child_spec(opts) do
+    Agent.child_spec(fn -> %{} end, opts)
   end
 
   @doc """

@@ -1,14 +1,14 @@
 defmodule KV.Registry do
-  use GenServer
+  @behaviour GenServer
 
   ## Client API
 
   @doc """
   Starts the registry with the given `name`.
   """
-  def start_link(name) do
-    # 1. Pass the name to GenServer's init
-    GenServer.start_link(__MODULE__, name, name: name)
+  def child_spec(args) do
+    name = Keyword.fetch!(args, :name)
+    GenServer.child_spec(__MODULE__, [arg: name] ++ args)
   end
 
   @doc """
@@ -70,7 +70,7 @@ defmodule KV.Registry do
     {:noreply, {names, refs}}
   end
 
-  def handle_info(_msg, state) do
-    {:noreply, state}
+  def handle_info(msg, state) do
+    GenServer.handle_info(msg, state)
   end
 end

@@ -18,8 +18,9 @@ defmodule KVServer.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :kv],
-     mod: {KVServer, []}]
+    [extra_applications: [:logger],
+     supervise: [{Task.Supervisor, name: KVServer.TaskSupervisor},
+                 {Task, arg: {KVServer, :accept, [4040]}}]]
   end
 
   # Dependencies can be Hex packages:
