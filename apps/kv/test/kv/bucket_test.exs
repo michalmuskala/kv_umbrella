@@ -2,7 +2,7 @@ defmodule KV.BucketTest do
   use ExUnit.Case, async: true
 
   setup do
-    {:ok, bucket} = KV.Bucket.start_link
+    {:ok, bucket} = start_child(KV.Bucket)
     {:ok, bucket: bucket}
   end
 
